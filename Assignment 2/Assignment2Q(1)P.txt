@@ -1,0 +1,133 @@
+#Assignment 2 Q1
+#Stat 701
+#MS Software Engineering
+# Fatima Anwar 2017-AG-3718
+# PYTHON CODE
+
+X1=[100,200,300,400,500,600,700]
+X2=[10,20,10,30,20,20,30]
+Y=[40,50,50,70,65,65,80]
+# Mean of X1
+X1_Mean=sum(X1)/len(X1)
+# Mean of X2
+X2_Mean=sum(X2)/len(X2)
+# Mean of Y
+Y_Mean=sum(Y)/len(Y)
+# X1[i]-X1_Mean
+x1=[]
+for i in range(len(X1)):
+ x1.append(X1[i]-X1_Mean)
+# X2[i]-X2_Mean
+x2=[]
+for i in range(len(X2)):
+ x2.append(X2[i]-X2_Mean)
+# Y[i]-Y_Mean
+y=[]
+for i in range(len(Y)): 
+    y.append(Y[i]-Y_Mean)
+# Sum(x1y)
+S_x1y=sum([i*j for i,j in zip(x1,y)])
+# Sum(X1)^2
+X1_S=sum([i*j for i,j in zip(X1,X1)])
+# Sum(X2)^2
+X2_Sq=sum([i*j for i,j in zip(X2,X2)])
+# Sum(x2y)
+S_x2y=sum([i*j for i,j in zip(x2,y)])  
+# S(x1)^2
+x1_sq=sum([i*j for i,j in zip(x1,x1)]) 
+# S(x2)^2
+x2_sq=sum([i*j for i,j in zip(x2,x2)]) 
+# Sum(x1y)*Sum(X2)^2
+A=S_x1y*X2_Sq
+# Sum(x1*x2)
+S_x1x2=sum([i*j for i,j in zip(x1,x2)])
+# Sum(x2y)*Sum(x1x2)
+B=S_x2y*S_x1x2
+# Sum(x1^2)*Sum(x2^2)
+C=x1_sq*x2_sq
+# Sum(x1x2)^2
+D=(S_x1x2*S_x1x2)
+# Beta1=A-B/C-D
+B1=(A-B)/(C-D)
+# Sum(X1^2)
+X1_Sq=sum([i*j for i,j in zip(X1,X2)])
+# Sum(x2y)*Sum(X1^2)
+A=S_x2y*X1_S
+# Sum(x1y)*Sum(x1x2)
+B=S_x1y*S_x1x2
+# Beta2=A-B/C-D
+E=A-B
+F=C-D
+B2=E/F
+# Betao=Y_Mean-B1X1_Mean-B2X2_Mean
+A=B1*X1_Mean
+B=B2*X2_Mean
+Bo=Y_Mean-A-B
+C=A-B
+Bo=Y_Mean-C
+# Yhat=Bo+B1X1+B2X2 
+a=[]
+b=[]
+Yhat=[]
+for i in range(len(X1)):
+    a.append(X1[i]*B1)
+for i in range(len(X2)):
+    b.append(X2[i]*B2)
+for i in range(len(a)): 
+    Yhat.append(a[i]+b[i]+Bo)
+#TSS
+a=[] 
+for i in range(len(Yhat)): 
+    a.append(Y[i]-Y_Mean)
+TSS=[] 
+TSS=sum([i*j for i,j in zip(a,a)])
+#MSS
+c=[] 
+for i in range(len(Yhat)): 
+    c.append(Yhat[i]-Y_Mean) 
+MSS=[] 
+MSS=sum([i*j for i,j in zip(c,c)])
+#RSS 
+d=[] 
+for i in range(len(Y)): 
+    d.append(Y[i]-Yhat[i]) 
+RSS=[] 
+RSS=sum([i*j for i,j in zip(d,d)])
+#MSE
+MSE=RSS/8
+#V(B1Hat)
+C=x1_sq*x2_sq
+E=C-D
+v_B1hat=MSE*(x2_sq/E)
+#v(B2hat)
+v_B2hat=x2_sq/E
+v_B2hat=MSE*(x1_sq/E)
+#v(Bohat)
+A=X1_Mean*X1_Mean
+A=A*x2_sq
+B=X2_Mean*X2_Mean
+B=B*x1_sq
+C=(X1_Mean*X2_Mean)
+C=2*C
+A=A+B-C
+B=A/E
+A=(1/7+B)
+v_Bohat=MSE*A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
