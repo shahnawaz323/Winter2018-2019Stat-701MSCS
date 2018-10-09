@@ -1,0 +1,66 @@
+### Barira Habib, 17-AG-3691, MSCS(3RD)
+
+from statsmodels.formula.api import ols
+from statsmodels.stats.anova import anova_lm
+import pandas as pd
+import numpy as np
+from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+
+
+dframe = pd.DataFrame(
+    {   "fert": [100, 200, 300, 400, 500, 600, 700],
+        "rain": [10, 20, 10, 30, 20, 20, 30],
+        "yield": [40, 50, 50, 70, 65, 65, 80]}
+    )
+
+print(dframe)
+
+fit = ols(formula="yield ~ fert + rain", data=dframe).fit()
+
+print(fit.summary())
+print("\n\n", fit.params)
+print("\nY_hat:\n", fit.fittedvalues)
+print("\nTSS =", fit.centered_tss)
+print("\nAnova Table\n", anova_lm(fit))
+
+
+axes = plt.figure().gca(projection='3d')
+
+axes.scatter(
+
+            dframe["fert"]
+            , dframe["rain"]
+            , dframe["yield"]
+            , color="red"
+        )
+axes.set_title("Linear Regression of Fertilizer, Rainfall and Yield")
+axes.set_xlabel("Fertilizer")
+axes.set_ylabel("Rainfall")
+axes.set_zlabel("Yield")
+
+x_surf = dframe["fert"]
+y_surf = dframe["rain"]
+
+x_surf, y_surf = np.meshgrid(x_surf, y_surf)
+
+
+exog = pd.core.frame.DataFrame({
+
+    "fert": x_surf.ravel(),
+    "rain": y_surf.ravel()
+})
+
+
+out = fit.predict(exog=exog)
+
+axes.plot_surface(
+
+            x_surf, y_surf
+            , out.values.reshape(x_surf.shape), rstride=1, cstride=1
+            , alpha=0.5
+        )
+
+plt.show()
+
