@@ -1,0 +1,65 @@
+
+import numpy as np
+
+
+Yield = np.array([40, 50, 50, 70, 65, 65, 80])
+fertilizer = np.array([100, 200, 300, 400, 500, 600, 700])
+rainfall = np.array([10, 20, 10, 30, 20, 20, 30])
+
+n = Yield.size
+K = 3
+Sh_Y_mean = sum(Yield)/n
+Sh_X1_mean = sum(fertilizer)/n
+Sh_X2_mean = sum(rainfall)/n
+
+print(" mean of y = ", Sh_Y_mean)
+print(" mean of X1 = ", Sh_X1_mean)
+print(" mean of X2 = ", Sh_X2_mean)
+
+Sh_sum_y = np.sum(Yield)
+Sh_sum_x1 = np.sum(fertilizer)
+Sh_sum_x2 = np.sum(rainfall)
+Sh_sum_x1x1 = np.sum(fertilizer * fertilizer)
+Sh_sum_x2x2 = np.sum(rainfall * rainfall)
+Sh_sum_x1x2 = np.sum(fertilizer * rainfall)
+Sh_sum_x1y = np.sum(fertilizer * Yield)
+Sh_sum_x2y = np.sum(rainfall * Yield)
+Sh_sum_yy = np.sum(Yield * Yield)
+
+
+Sh_S_x1x1 = float(Sh_sum_x1x1-Sh_sum_x1 ** 2/n)
+Sh_S_x2x2 = (Sh_sum_x2x2-(Sh_sum_x2 ** 2/n))
+Sh_S_x1y = (Sh_sum_x1y-(Sh_sum_x1*Sh_sum_y/n))
+Sh_S_x2y = (Sh_sum_x2y-(Sh_sum_x2*Sh_sum_y/n))
+Sh_S_x1x2 = (Sh_sum_x1x2-(Sh_sum_x1*Sh_sum_x2/n))
+Sh_S_yy = (Sh_sum_yy-(Sh_sum_y ** 2/n))
+
+b1 = float((Sh_S_x2x2*Sh_S_x1y-Sh_S_x1x2*Sh_S_x2y)/(Sh_S_x1x1*Sh_S_x2x2-Sh_S_x1x2 ** 2))
+b2 = float((Sh_S_x1x1*Sh_S_x2y-Sh_S_x1x2*Sh_S_x1y)/(Sh_S_x1x1*Sh_S_x2x2-Sh_S_x1x2 ** 2))
+b0 = float(Sh_Y_mean-(b1*Sh_X1_mean)-(b2*Sh_X2_mean))
+
+Sh_Y_heat = b0 + b1 * fertilizer + b2 * rainfall
+Sh_sum_Y_heat = sum(Sh_Y_heat)
+Sh_TSS = np.sum((Yield - Sh_Y_mean) ** 2)
+Sh_MSS = np.sum((Sh_Y_heat - Sh_Y_mean) ** 2)
+Sh_RSS = np.sum((Yield - Sh_Y_heat) ** 2)
+Sh_R2 = float(Sh_RSS / Sh_TSS)
+sigma_heat2 = Sh_RSS / (n - K)
+
+variance_B1_hat = sigma_heat2*(Sh_S_x2x2/(Sh_S_x1x1*Sh_S_x2x2-Sh_S_x1x2 ** 2))
+variance_B2_hat = sigma_heat2*(Sh_S_x1x1/(Sh_S_x1x1*Sh_S_x2x2-Sh_S_x1x2 ** 2))
+v_B0 = sigma_heat2*((1/n)+((Sh_X1_mean ** 2*Sh_S_x2x2+Sh_X2_mean ** 2*Sh_S_x1x1-2*Sh_X1_mean*Sh_X2_mean*Sh_S_x1x2)/(Sh_S_x1x1*Sh_S_x2x2-Sh_S_x1x2 ** 2)))
+
+print("b0 = ", b0)
+print("b1 = ", b1)
+print("b2 = ", b2)
+print("Y = ", b0, " + ", b1, "X1", b2, "X2")
+print("sum of all y values = ", Sh_sum_Y_heat)
+print("TSS = ", Sh_TSS)
+print("MSS = ", Sh_MSS)
+print("RSS = ", Sh_RSS)
+print("R2 = ", Sh_R2)
+print("sigma.heat2 = ", sigma_heat2)
+print("variance of B1.hat =", variance_B1_hat)
+print("variance of B2.hat =", variance_B2_hat)
+print("variance of B0.hat =", v_B0)
