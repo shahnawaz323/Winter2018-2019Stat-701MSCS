@@ -1,0 +1,52 @@
+import numpy as np
+
+X1 = np.array([100,200,300,400,500,600,700])
+print(" X1 = ", X1)
+X1=X1*27.2155
+X2 = np.array([10,20,10,30,20,20,30])
+print(" X2 = ", X2)
+X2=X2*25.4
+Y = np.array([40,50,50,70,65,65,80])
+print(" Y = ", Y)
+Y=Y/2.205
+MeanX1 = sum(X1)/len(X1)
+print(" Mean of X1 = ", MeanX1)
+MeanX2 = sum(X2)/len(X2)
+print(" Mean of X2 = ", MeanX2)
+MeanY = sum(Y)/len(Y)
+print(" Mean of Y = ", MeanY)
+x1=(X1-MeanX1)
+print("value of x1 =" , x1)
+x2=(X2-MeanX2)
+print("value of x2 =" , x2)
+y=(Y-MeanY)
+print("value of y =" , y)
+x12=(X1-MeanX1)*(X1-MeanX1)
+a=sum(x12)
+print("Square of x1 =" , a)
+x22=(X2-MeanX2)*(X2-MeanX2)
+b=sum(x22)
+print("Square of x2 =" , b)
+y2=(Y-MeanY)*(Y-MeanY)
+c=sum(y2)
+print("Square of y =" , c)
+H=x1*y
+I=sum(H)
+print("samtion of x1y =" ,I)
+J=x2*y
+K=sum((J))
+print("samation of x2y= ",K)
+L=x1*x2
+M=sum(L)
+print("samation of x2y= ",M)
+E=(I*b)-(M*K)
+W=(a*b)-(M*M)
+b1=E/W
+print("value of b1 =" , b1)
+O=(K*a)-(I*M)
+b2=O/W
+print("value of b2 =" , b2)
+b0=MeanY-(b1*MeanX1)-(b2*MeanX2)
+print("value of b0 =" ,b0)
+
+
