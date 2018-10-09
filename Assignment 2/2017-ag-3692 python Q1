@@ -1,0 +1,63 @@
+
+import numpy as np
+# declaration
+ZeeY = np.array([5, 7, 15, 17, 9, 11])
+ZeeX1 = np.array([0, 0, 10, 10, 20, 20])
+ZeeX2 = np.array([0, 0, 100, 100, 400, 400])
+
+n = ZeeY.size
+K = 3
+# find mean
+ZeeY_mean = sum(ZeeY)/n
+ZeeX1_mean = sum(ZeeX1)/n
+ZeeX2_mean = sum(ZeeX2)/n
+
+Zee_sum_y = np.sum(ZeeY)
+Zee_sum_x1 = np.sum(ZeeX1)
+Zee_sum_x2 = np.sum(ZeeX2)
+Zee_sum_x1x1 = np.sum(ZeeX1 * ZeeX1)
+Zee_sum_x2x2 = np.sum(ZeeX2 * ZeeX2)
+Zee_sum_x1x2 = np.sum(ZeeX1 * ZeeX2)
+Zee_sum_x1y = np.sum(ZeeX1 * ZeeY)
+Zee_sum_x2y = np.sum(ZeeX2 * ZeeY)
+Zee_sum_yy = np.sum(ZeeY * ZeeY)
+
+Zee_S_x1x1 = float(Zee_sum_x1x1-Zee_sum_x1 ** 2/n)
+Zee_S_x2x2 = (Zee_sum_x2x2-(Zee_sum_x2 ** 2/n))
+Zee_S_x1y = (Zee_sum_x1y-(Zee_sum_x1*Zee_sum_y/n))
+Zee_S_x2y = (Zee_sum_x2y-(Zee_sum_x2*Zee_sum_y/n))
+Zee_S_x1x2 = (Zee_sum_x1x2-(Zee_sum_x1*Zee_sum_x2/n))
+Zee_S_yy = (Zee_sum_yy-(Zee_sum_y ** 2/n))
+
+b1 = float((Zee_S_x2x2*Zee_S_x1y-Zee_S_x1x2*Zee_S_x2y)/(Zee_S_x1x1*Zee_S_x2x2-Zee_S_x1x2 ** 2))
+b2 = float((Zee_S_x1x1*Zee_S_x2y-Zee_S_x1x2*Zee_S_x1y)/(Zee_S_x1x1*Zee_S_x2x2-Zee_S_x1x2 ** 2))
+b0 = float(ZeeY_mean-(b1*ZeeX1_mean)-(b2*ZeeX2_mean))
+
+Zee_Y_heat = b0 + b1 * ZeeX1 + b2 * ZeeX2
+Zee_sum_Y_heat = np.sum(Zee_Y_heat)
+Zee_TSS = np.sum((ZeeY - ZeeY_mean) ** 2)
+Zee_MSS = np.sum((Zee_Y_heat - ZeeY_mean) ** 2)
+Zee_RSS = np.sum((ZeeY - Zee_Y_heat) ** 2)
+Zee_R2 = float(Zee_RSS / Zee_TSS)
+Zee_sigma_heat2 = Zee_RSS / (n - K)
+
+variance_B1_hat = Zee_sigma_heat2*(Zee_S_x2x2/(Zee_S_x1x1*Zee_S_x2x2-Zee_S_x1x2 ** 2))
+variance_B2_hat = Zee_sigma_heat2*(Zee_S_x1x1/(Zee_S_x1x1*Zee_S_x2x2-Zee_S_x1x2 ** 2))
+variance_B0 = Zee_sigma_heat2*((1/n)+((ZeeX1_mean ** 2*Zee_S_x2x2+ZeeX2_mean ** 2*Zee_S_x1x1-2*ZeeX1_mean*ZeeX2_mean*Zee_S_x1x2)/(Zee_S_x1x1*Zee_S_x2x2-Zee_S_x1x2 ** 2)))
+
+print(" mean of y = ", ZeeY_mean)
+print(" mean of X1 = ", ZeeX1_mean)
+print(" mean of X2 = ", ZeeX2_mean)
+print("value of b0 = ", b0)
+print("value of b1 = ", b1)
+print("value of b2 = ", b2)
+print("value of Y = ", b0, " + ", b1, "X1", b2, "X2")
+print("sum of all y values = ", Zee_sum_Y_heat)
+print("value of TSS = ", Zee_TSS)
+print("value of MSS = ", Zee_MSS)
+print("value of RSS = ", Zee_RSS)
+print("value of R2 = ", Zee_R2)
+print("value of sigma.heat2 = ", Zee_sigma_heat2)
+print("value of variance of B1.hat =", variance_B1_hat)
+print("value of variance of B2.hat =", variance_B2_hat)
+print("value of variance of B0.hat =", variance_B0)
