@@ -1,0 +1,62 @@
+""""
+Assignment 2 Q3
+Stat 701
+MS Software Engineering
+Fatima Anwar 2017-AG-3718
+
+Python CODE
+This data set consists of daily visitor counts on an educational web site.
+Weekday   Page Loads      Unique Visits
+  1          1896              1409
+  2          3033              2062
+  3          3445              2327
+  4          3423              2384
+  5          3319              2272
+  6          2783              1941
+  7          1952              1240
+  1          2245              1611
+  2          3928              2518
+  3          3810              2621
+  4          3931              2656
+  5          3523              2457
+  6          2943              1928
+  7          1751              1237
+"""
+
+X1=[1896,3033,3445,3423,2219,2783,1952,2245,3928,3810,3931,3523,2943,1751]
+X2=[1409,2062,2327,2384,2272,1941,1240,1611,2518,2621,2656,2457,1928,1237]
+Y=[1,2,3,4,5,6,7,1,2,3,4,5,6,7]
+# Mean of X1
+X1_Mean<-sum(X1)/length(X1)
+# Mean of X2
+X2_Mean<-sum(X2)/length(X2)
+# Mean of Y
+Y_Mean<-sum(Y)/length(Y)
+# X1[i]-X1_Mean
+x1<-X1-X1_Mean
+# X2[i]-X2_Mean
+x2<-X2-X2_Mean
+# Y[i]-Y_Mean
+y<-Y-Y_Mean
+# Sum(x1y)
+S_x1y<-sum(x1*y)
+# Sum(X2)^2
+X2_Sq<-sum(X2*X2)
+# Sum(x2y)
+S_x2y<-sum(x2*y)
+# S(x1)^2
+x1_sq<-sum(x1*x1)
+# S(x2)^2
+
+
+
+
+
+
+
+
+         
+
+
+
+
