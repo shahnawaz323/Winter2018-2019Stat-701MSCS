@@ -1,0 +1,82 @@
+# clear all variables in the workspace
+
+rm(list=ls(all=TRUE))
+y = c(5,7,15,17,9,11)
+X1 = c(0,0,10,10,20,20)
+X2= c(0,0,100,100,400,400)
+
+MLR = function(Zee.Y, Zee.X1, Zee.X2)
+{
+  sample.size = length(Zee.Y)
+  K =3
+  cat("length = ", sample.size, "\n")
+  Zee.mean.Y = mean(Zee.Y)
+  Zee.mean.X1 = mean(Zee.X1)
+  Zee.mean.X2 = mean(Zee.X2)
+  
+  cat("mean of Y = ", Zee.mean.Y, "\n")
+  cat("mean of X1 = ", Zee.mean.X1, "\n")
+  cat("mean of X2 = ", Zee.mean.X2, "\n","\n")
+  
+  Zee.sumy=sum(Zee.Y)
+  Zee.sumx1=sum(Zee.X1)
+  Zee.sumx2=sum(Zee.X2)
+  Zee.sumx1x1=sum(Zee.X1*Zee.X1)
+  Zee.sumx2x2=sum(Zee.X2*Zee.X2)
+  Zee.sumx1x2=sum(Zee.X1*Zee.X2)
+  Zee.sumx1y=sum(Zee.X1*Zee.Y)
+  Zee.sumx2y=sum(Zee.X2*Zee.Y)
+  Zee.sumyy=sum(Zee.Y*Zee.Y)
+  
+  Zee.Sx1x1=Zee.sumx1x1-(Zee.sumx1^2/sample.size)
+  Zee.Sx2x2=Zee.sumx2x2-(Zee.sumx2^2/sample.size)
+  Zee.Sx1y=Zee.sumx1y-(Zee.sumx1*Zee.sumy/sample.size)
+  Zee.Sx2y=Zee.sumx2y-(Zee.sumx2*Zee.sumy/sample.size)
+  Zee.Sx1x2=Zee.sumx1x2-(Zee.sumx1*Zee.sumx2/sample.size)
+  Zee.Syy=Zee.sumyy-(Zee.sumy^2/sample.size)
+  
+  
+  b1=(Zee.Sx2x2*Zee.Sx1y-Zee.Sx1x2*Zee.Sx2y)/(Zee.Sx1x1*Zee.Sx2x2-Zee.Sx1x2^2)
+  b2=(Zee.Sx1x1*Zee.Sx2y-Zee.Sx1x2*Zee.Sx1y)/(Zee.Sx1x1*Zee.Sx2x2-Zee.Sx1x2^2)
+  b0=Zee.mean.Y-(b1*Zee.mean.X1)-(b2*Zee.mean.X2)
+  
+  Zee.Y.heat= b0+b1*Zee.X1+b2*Zee.X2
+  Zee.sumY.heat=sum(Zee.Y.heat)
+  Zee.TSS=sum((Zee.Y-Zee.mean.Y)^2)
+  Zee.MSS=sum((Zee.Y.heat-Zee.mean.Y)^2)
+  Zee.RSS=sum((Zee.Y-Zee.Y.heat)^2)
+  Zee.R2=Zee.RSS/Zee.TSS
+  Zee.sigma.heat2=Zee.RSS/(sample.size - K)
+  Zee.variance.B1.hat=Zee.sigma.heat2*(Zee.Sx2x2/(Zee.Sx1x1*Zee.Sx2x2-Zee.Sx1x2^2))
+  Zee.variance.B2.hat=Zee.sigma.heat2*(Zee.Sx1x1/(Zee.Sx1x1*Zee.Sx2x2-Zee.Sx1x2^2))
+  Zee.variance.B0.hat=Zee.sigma.heat2*((1/sample.size)+((Zee.mean.X1^2*Zee.Sx2x2+Zee.mean.X2^2*Zee.Sx1x1-2*Zee.mean.X1*Zee.mean.X2*Zee.Sx1x2)/(Zee.Sx1x1*Zee.Sx2x2-Zee.Sx1x2^2)))
+  
+  cat("b0 = ", b0, "\n")
+  cat("b1 = ", b1, "\n")
+  cat("b2 = ", b2, "\n","\n")
+  
+  cat("Y = ", b0," + ",b1,"X1",b2,"X2", "\n")
+  cat("sum of all y values = ", Zee.sumY.heat, "\n","\n")
+  
+  cat("TSS = ", Zee.TSS, "\n")
+  cat("MSS = ", Zee.MSS, "\n")
+  cat("RSS = ", Zee.RSS, "\n")
+  cat("R2 = ", Zee.R2, "\n")
+  cat("sigma.heat2 = ", Zee.sigma.heat2, "\n")
+  cat("variance of B1.hat =",Zee.variance.B1.hat,"\n")
+  cat("variance of B2.hat =",Zee.variance.B2.hat,"\n")
+  cat("variance of B0.hat =",Zee.variance.B0.hat,"\n")
+  
+}
+
+Exp.data = cbind(y, X1, X2)
+colnames(Exp.data) = c('y', 'X1', 'X2')
+Exp.data
+
+# let's conduct simple linear regression on data by calling our function
+Exp.regression <- MLR(y, X1, X2)
+Exp.regression
+
+
+
+
