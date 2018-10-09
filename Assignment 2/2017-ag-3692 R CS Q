@@ -1,0 +1,84 @@
+
+
+rm(list=ls(all=TRUE))
+Pc.Performance = c(240,250,250,270,265,265,280)
+Usage = c(2100,2200,2300,2400,2500,2600,2700)
+Components= c(210,220,210,230,220,220,230)
+
+MLR.Example = function(Sh.Y, Sh.X1, Sh.X2)
+{
+  sample.size = length(Sh.Y)
+  K =3
+  cat("length = ", sample.size, "\n")
+  Sh.mean.Y = mean(Sh.Y)
+  Sh.mean.X1 = mean(Sh.X1)
+  Sh.mean.X2 = mean(Sh.X2)
+  
+  cat("mean of Y = ", Sh.mean.Y, "\n")
+  cat("mean of X1 = ", Sh.mean.X1, "\n")
+  cat("mean of X2 = ", Sh.mean.X2, "\n","\n")
+  
+  Sh.sumy=sum(Sh.Y)
+  Sh.sumx1=sum(Sh.X1)
+  Sh.sumx2=sum(Sh.X2)
+  Sh.sumx1x1=sum(Sh.X1*Sh.X1)
+  Sh.sumx2x2=sum(Sh.X2*Sh.X2)
+  Sh.sumx1x2=sum(Sh.X1*Sh.X2)
+  Sh.sumx1y=sum(Sh.X1*Sh.Y)
+  Sh.sumx2y=sum(Sh.X2*Sh.Y)
+  Sh.sumyy=sum(Sh.Y*Sh.Y)
+  
+  Sh.Sx1x1=Sh.sumx1x1-(Sh.sumx1^2/sample.size)
+  Sh.Sx2x2=Sh.sumx2x2-(Sh.sumx2^2/sample.size)
+  Sh.Sx1y=Sh.sumx1y-(Sh.sumx1*Sh.sumy/sample.size)
+  Sh.Sx2y=Sh.sumx2y-(Sh.sumx2*Sh.sumy/sample.size)
+  Sh.Sx1x2=Sh.sumx1x2-(Sh.sumx1*Sh.sumx2/sample.size)
+  Sh.Syy=Sh.sumyy-(Sh.sumy^2/sample.size)
+  
+  
+  b1=(Sh.Sx2x2*Sh.Sx1y-Sh.Sx1x2*Sh.Sx2y)/(Sh.Sx1x1*Sh.Sx2x2-Sh.Sx1x2^2)
+  b2=(Sh.Sx1x1*Sh.Sx2y-Sh.Sx1x2*Sh.Sx1y)/(Sh.Sx1x1*Sh.Sx2x2-Sh.Sx1x2^2)
+  b0=Sh.mean.Y-(b1*Sh.mean.X1)-(b2*Sh.mean.X2)
+  
+  Sh.Y.heat= b0+b1*Sh.X1+b2*Sh.X2
+  Sh.sumY.heat=sum(Sh.Y.heat)
+  Sh.TSS=sum((Sh.Y-Sh.mean.Y)^2)
+  Sh.MSS=sum((Sh.Y.heat-Sh.mean.Y)^2)
+  Sh.RSS=sum((Sh.Y-Sh.Y.heat)^2)
+  Sh.R2=Sh.RSS/Sh.TSS
+  Sh.sigma.heat2=Sh.RSS/(sample.size - K)
+  Sh.variance.B1.hat=Sh.sigma.heat2*(Sh.Sx2x2/(Sh.Sx1x1*Sh.Sx2x2-Sh.Sx1x2^2))
+  Sh.variance.B2.hat=Sh.sigma.heat2*(Sh.Sx1x1/(Sh.Sx1x1*Sh.Sx2x2-Sh.Sx1x2^2))
+  Sh.variance.B0.hat=Sh.sigma.heat2*((1/sample.size)+((Sh.mean.X1^2*Sh.Sx2x2+Sh.mean.X2^2*Sh.Sx1x1-2*Sh.mean.X1*Sh.mean.X2*Sh.Sx1x2)/(Sh.Sx1x1*Sh.Sx2x2-Sh.Sx1x2^2)))
+  
+  cat("b0 = ", b0, "\n")
+  cat("b1 = ", b1, "\n")
+  cat("b2 = ", b2, "\n","\n")
+  
+  cat("Y = ", b0," + ",b1,"X1",b2,"X2", "\n")
+  cat("sum of all y values = ", Sh.sumY.heat, "\n","\n")
+  
+  cat("TSS = ", Sh.TSS, "\n")
+  cat("MSS = ", Sh.MSS, "\n")
+  cat("RSS = ", Sh.RSS, "\n")
+  cat("R2 = ", Sh.R2, "\n")
+  cat("sigma.heat2 = ", Sh.sigma.heat2, "\n")
+  cat("variance of B1.hat =",Sh.variance.B1.hat,"\n")
+  cat("variance of B2.hat =",Sh.variance.B2.hat,"\n")
+  cat("variance of B0.hat =",Sh.variance.B0.hat,"\n")
+  
+}
+
+Exp.data = cbind(Pc.Performance, Usage, Components)
+colnames(Exp.data) = c('Pc.Performance', 'Usage', 'Components')
+Exp.data
+
+# let's conduct simple linear regression on data by calling our function
+Exp.regression <- MLR.Example(Pc.Performance, Usage, Components)
+Exp.regression
+
+
+
+
+
+
