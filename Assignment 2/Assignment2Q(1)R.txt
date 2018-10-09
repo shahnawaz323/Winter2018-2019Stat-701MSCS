@@ -1,0 +1,90 @@
+#Assignment 2 Q1
+#Stat 701
+#MS Software Engineering
+# Fatima Anwar 2017-AG-3718
+# R CODE
+
+X1<-c(100,200,300,400,500,600,700)
+X2<-c(10,20,10,30,20,20,30)
+Y<-c(40,50,50,70,65,65,80)
+# Mean of X1
+X1_Mean<-sum(X1)/length(X1)
+# Mean of X2
+X2_Mean<-sum(X2)/length(X2)
+# Mean of Y
+Y_Mean<-sum(Y)/length(Y)
+# X1[i]-X1_Mean
+x1<-X1-X1_Mean
+# X2[i]-X2_Mean
+x2<-X2-X2_Mean
+# Y[i]-Y_Mean
+y<-Y-Y_Mean
+# Sum(x1y)
+S_x1y<-sum(x1*y)
+# Sum(X2)^2
+X2_Sq<-sum(X2*X2)
+# Sum(x2y)
+S_x2y<-sum(x2*y)
+# S(x1)^2
+x1_sq<-sum(x1*x1)
+# S(x2)^2
+x2_sq<-sum(x2*x2)
+# Sum(x1y)*Sum(X2)^2
+A<-S_x1y*X2_Sq
+# Sum(x1*x2)
+S_x1x2<-sum(x1*x2)
+# Sum(x2y)*Sum(x1x2)
+B<-S_x2y*S_x1x2
+# Sum(x1^2)*Sum(x2^2)
+C<-x1_sq*x2_sq
+#Sum(x1x2)^2
+D<-(S_x1x2*S_x1x2)
+# Beta1=A-B/C-D
+B1=(A-B)/(C-D)
+# Sum(X1^2)
+X1_Sq=sum(X1*X1)
+# Sum(x2y)*Sum(X1^2)
+A<-S_x2y*X1_Sq
+# Sum(x1y)*Sum(x1x2)
+B<-S_x1y*S_x1x2
+# Beta2=A-B/C-D
+B2=(A-B)/(C-D)
+# Betao=Y_Mean-B1X1_Mean-B2X2_Mean
+Bo=Y_Mean-(B1*X1_Mean)-(B2*X2_Mean)
+A<-B1*X1_Mean
+B<-B2*X2_Mean
+Bo<-Y_Mean-A-B
+C<-A-B
+Bo<-Y_Mean-C
+# Yhat=Bo+B1X1+B2X2 
+A<-B1*X1
+B<-B2*X2
+Yhat=Bo+A+B
+# sum(Y[i]-Y_Mean)^2
+TSS<-sum(y*y)
+# sum(Yhat[i]-Y_Mean)^2
+A<-Yhat*Y_Mean
+MSS<-sum(A*A)
+# sum(Y-Yhat)^2
+A<-Y-Yhat
+RSS<-sum(A*A)
+# MSE=RSS/n-k
+MSE<-RSS/4
+#v(B1hat)
+C<-x1_sq*x2_sq
+E<-(C-D)
+v_B1hat<-MSE*(x2_sq/E)
+#v(B2hat)
+v_B2hat<-x2_sq/E
+v_B2hat<-MSE*(x1_sq/E)
+#v(Bohat)
+A<-X1_Mean^2
+A<-A*x2_sq
+B<-X2_Mean^2
+B<-B*x1_sq
+C<-(X1_Mean*X2_Mean)
+C<-2*C
+A<-A+B-C
+B<-A/E
+A<-(1/7+B)
+v_Bohat=MSE*A
